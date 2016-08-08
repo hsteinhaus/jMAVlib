@@ -22,4 +22,17 @@ public class LatLonAlt {
                 lon + vector[1] / (Math.cos(lat * Math.PI / 180.0) * RADIUS_OF_EARTH) * 180.0 / Math.PI,
                 alt - vector[2]);
     }
+
+    public double[] sub(LatLonAlt pos) {
+        return new double[]{
+                (lat - pos.lat) * Math.PI / 180.0 * RADIUS_OF_EARTH,
+                (lon - pos.lon) * Math.PI / 180.0 * Math.cos(lat * Math.PI / 180.0) * RADIUS_OF_EARTH,
+                pos.alt - alt
+        };
+    }
+
+    @Override
+    public LatLonAlt clone() {
+        return new LatLonAlt(lat, lon, alt);
+    }
 }
