@@ -35,4 +35,18 @@ public class LatLonAlt {
     public LatLonAlt clone() {
         return new LatLonAlt(lat, lon, alt);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj != null && obj instanceof LatLonAlt) {
+            LatLonAlt other = (LatLonAlt) obj;
+            return (lat == other.lat) && (lon == other.lon) && (alt == other.alt);
+        }
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("lat=%s lon=%s alt=%s", lat, lon, alt);
+    }
 }
