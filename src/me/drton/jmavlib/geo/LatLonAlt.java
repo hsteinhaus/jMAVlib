@@ -31,6 +31,10 @@ public class LatLonAlt {
         };
     }
 
+    public boolean isFinite() {
+        return Double.isFinite(lat) && Double.isFinite(lon) && Double.isFinite(alt);
+    }
+
     @Override
     public LatLonAlt clone() {
         return new LatLonAlt(lat, lon, alt);
