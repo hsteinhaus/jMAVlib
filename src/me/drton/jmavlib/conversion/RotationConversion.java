@@ -21,6 +21,24 @@ public class RotationConversion {
         };
     }
 
+    public static double[] rotationMatrixByQuaternion(double[] q) {
+        double aSq = q[0] * q[0];
+        double bSq = q[1] * q[1];
+        double cSq = q[2] * q[2];
+        double dSq = q[3] * q[3];
+        return new double[]{
+            aSq + bSq - cSq - dSq,
+            2.0f * (q[1] * q[2] - q[0] * q[3]),
+            2.0f * (q[0] * q[2] + q[1] * q[3]),
+            2.0f * (q[1] * q[2] + q[0] * q[3]),
+            aSq - bSq + cSq - dSq,
+            2.0f * (q[2] * q[3] - q[0] * q[1]),
+            2.0f * (q[1] * q[3] - q[0] * q[2]),
+            2.0f * (q[0] * q[1] + q[2] * q[3]),
+            aSq - bSq - cSq + dSq
+        };
+    }
+
     public static double[] eulerAnglesByQuaternion(double[] q) {
         return new double[]{
                 Math.atan2(2.0 * (q[0] * q[1] + q[2] * q[3]), 1.0 - 2.0 * (q[1] * q[1] + q[2] * q[2])),
