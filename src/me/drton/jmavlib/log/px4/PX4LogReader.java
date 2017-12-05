@@ -116,7 +116,12 @@ public class PX4LogReader extends BinaryLogReader {
             PX4LogMessage msg;
             try {
                 msg = readMessage();
-            } catch (EOFException e) {
+                System.out.println(msg.toString());
+            }
+            catch (RuntimeException re) {
+                continue;
+            }
+            catch (EOFException e) {
                 break;
             }
             // Time range
@@ -249,16 +254,20 @@ public class PX4LogReader extends BinaryLogReader {
                 } else {
                     Integer idx = messageDescription.fieldsMap.get(tsName);
                     if (idx != null && idx == 0) {
-                        PX4LogMessage msg = messageDescription.parseMessage(buffer);
-                        long t = msg.getLong(idx);
-                        if (!tsMicros) {
-                            t *= 1000;
-                        }
-                        if (t > seekTime) {
-                            // Time found
-                            time = t;
-                            position(pos);
-                            return true;
+                        try {
+                            PX4LogMessage msg = messageDescription.parseMessage(buffer);
+                            long t = msg.getLong(idx);
+                            if (!tsMicros) {
+                                t *= 1000;
+                            }
+                            if (t > seekTime) {
+                                // Time found
+                                time = t;
+                                position(pos);
+                                return true;
+                            }
+                        } catch (RuntimeException re) {
+                            continue;
                         }
                     } else {
                         // Skip the message
@@ -316,7 +325,13 @@ public class PX4LogReader extends BinaryLogReader {
             lastMsg = null;
         }
         while (true) {
-            PX4LogMessage msg = readMessage();
+            PX4LogMessage msg = null;
+            try {
+                msg = readMessage();
+            }
+            catch (RuntimeException re) {
+                continue;
+            }
             if (null == msg) {
                 continue;
             }
